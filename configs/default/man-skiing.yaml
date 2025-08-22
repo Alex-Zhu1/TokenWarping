@@ -1,0 +1,45 @@
+pretrained_model_path: "/private/workspace/zhm/sd/stable-diffusion-v1-5/"
+output_dir: ""    # "./outputs/v1_demo/pose/dance"
+pretrained_controlnet_path: "/private/workspace/zhm/sd/sd-controlnet-hed/"
+# pretrained_controlnet_path: "/private/workspace/zhm/sd/control_v11p_sd15_softedge/"
+
+control_config:
+  type: "hed"
+  control_scale: 0.85
+  unet_subfolder: "unet"
+
+train_data:
+  video_path: ""
+  prompt: "a girl smiling towards the camera"
+  n_sample_frames: 50
+  width: 512
+  height: 512
+  sample_start_idx: 0
+  sample_frame_rate: 2
+
+validation_data:
+  prompts:
+    - "a girl smiling towards the camera, cartoon style"
+  video_length: 50
+  width: 512
+  height: 512
+  guidance_scale: 7.5  # sd原版推荐12，moxin是3.2， 其他推荐7.5
+  num_steps: 50
+  start: "inversion"
+  edit_type: "DDIM"
+
+learning_rate: 3e-5
+train_batch_size: 1
+max_train_steps: 300
+validation_steps: 100
+trainable_modules:
+  - "attn1.to_q"
+  - "attn2.to_q"
+  - "attn_temp"
+  - "norm_temp"
+  - "conv_temp"
+
+seed: 0
+mixed_precision: fp16
+gradient_checkpointing: True
+enable_xformers_memory_efficient_attention: True

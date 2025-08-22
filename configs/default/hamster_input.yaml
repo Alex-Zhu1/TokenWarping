@@ -1,0 +1,26 @@
+pretrained_model_path: "/home/haim/model_weight/sd/stable-diffusion-v1-5/"
+output_dir: ""    # "./outputs/v1_demo/pose/dance"
+pretrained_controlnet_path: "/home/haim/model_weight/sd/sd-controlnet-hed/"
+# pretrained_controlnet_path: "/private/workspace/zhm/sd/control_v11p_sd15_softedge/"
+
+control_config:
+  type: "hed"
+  control_scale: 0.80 # 0.8, 0.85眼球在变化，0.95过拟合了
+  unet_subfolder: "unet"
+
+validation_data:
+  prompts:
+    - "A white cat walking on the piano in cartoon style"
+  video_length: 120
+  width: 512
+  height: 512
+  sample_start_idx: 0
+  sample_frame_rate: 2  # 4有点太大了
+  guidance_scale: 7.5  # sd原版推荐12，moxin是3.2， 其他推荐7.5
+  num_steps: 50
+  start: "noise"
+  edit_type: "DDIM"
+
+seed: 0
+mixed_precision: fp16
+enable_xformers_memory_efficient_attention: True

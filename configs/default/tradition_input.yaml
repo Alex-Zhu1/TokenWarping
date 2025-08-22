@@ -1,0 +1,44 @@
+pretrained_model_path: "/private/workspace/zhm/sd/stable-diffusion-v1-5/"
+output_dir: "outputs/tradition_input"    # "./outputs/v1_demo/pose/dance"
+pretrained_controlnet_path: "/private/workspace/zhm/sd/sd-controlnet-hed/"
+
+control_config:
+  type: "hed"
+  control_scale: 0.7  # 0.85
+  unet_subfolder: "unet"
+
+train_data:
+  video_path: "videos/tradition_input.mp4"
+  prompt: ""
+  n_sample_frames: 50
+  width: 512
+  height: 512
+  sample_start_idx: 0
+  sample_frame_rate: 1
+
+validation_data:
+  prompts:
+    - "Traditional chinese ink painting of a traditional girl, hanfu"
+  video_length: 50
+  width: 512
+  height: 512
+  guidance_scale: 3.5   # 之前是12
+  num_steps: 50
+  start: "noise"
+  edit_type: "DDIM"
+
+learning_rate: 3e-5
+train_batch_size: 1
+max_train_steps: 300
+validation_steps: 100
+trainable_modules:
+  - "attn1.to_q"
+  - "attn2.to_q"
+  - "attn_temp"
+  - "norm_temp"
+  - "conv_temp"
+
+seed: 0
+mixed_precision: fp16
+gradient_checkpointing: True
+enable_xformers_memory_efficient_attention: True

@@ -1,0 +1,42 @@
+pretrained_model_path: "/private/workspace/zhm/sd/stable-diffusion-v1-5/"
+output_dir: './outputs_4_23_asia/'
+# pretrained_controlnet_path: "/private/workspace/zhm/sd/control_v11f1p_sd15_depth/"
+# pretrained_controlnet_path: "/private/workspace/zhm/sd/sd-controlnet-depth/"
+# pretrained_controlnet_path: "/private/workspace/zhm/sd/sd-controlnet-hed/"
+pretrained_controlnet_path: "/private/workspace/zhm/sd/control_v11p_sd15_softedge/"
+
+# spider 不适合对kv4进行存一直存在的区域，实验发现存储kv4会导致生成的视频中出现一些不合理的区域
+control_config:
+  type: "hed"
+  control_scale: 0.7
+  unet_subfolder: "flat"
+
+train_data:
+  video_path: 'videos/spider.mp4'
+  prompt: "a person is dancing"
+  n_sample_frames: 16
+  width: 512
+  height: 512
+  sample_start_idx: 0
+  sample_frame_rate: 1
+
+validation_data:
+  prompts:
+    - "A cartoon spiderman in black suit, black shoes and white gloves is dancing"
+  video_length: 16
+  width: 512
+  height: 512
+  guidance_scale: 12.5
+  num_steps: 50
+  start: "noise"
+  edit_type: "DDIM"
+
+learning_rate: 3e-5
+train_batch_size: 1
+max_train_steps: 300
+validation_steps: 100
+
+seed: 0
+mixed_precision: fp16
+gradient_checkpointing: True
+enable_xformers_memory_efficient_attention: True

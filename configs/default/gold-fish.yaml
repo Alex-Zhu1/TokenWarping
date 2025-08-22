@@ -1,0 +1,27 @@
+pretrained_model_path: "/home/haim/model_weight/sd/stable-diffusion-v1-5/"
+output_dir: "outputs/woman"
+pretrained_controlnet_path: "/home/haim/model_weight/sd/sd-controlnet-canny/"
+
+control_config:
+  type: "canny"
+  low_threshold: 50
+  high_threshold: 100
+  control_scale: 1.0
+
+validation_data:
+  prompts:
+    - "watercolor, gold fish"
+  video_length: 14
+  width: 512
+  height: 512
+  guidance_scale: 3.5
+  num_steps: 50
+  start: "noise" # forward diffusion
+  edit_type: "DDIM"  # reserve diffusion
+  sample_start_idx: 0
+  sample_frame_rate: 2
+
+seed: 0
+mixed_precision: fp16
+gradient_checkpointing: True
+enable_xformers_memory_efficient_attention: True

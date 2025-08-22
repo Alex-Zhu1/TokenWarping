@@ -1,0 +1,46 @@
+pretrained_model_path: "/private/workspace/zhm/sd/stable-diffusion-v1-5/"
+# pretrained_model_path: 'stablediffusionapi/flat-2d-animerge'
+output_dir: "./outputs/boxer_depth"    # "./outputs/v1_demo/pose/dance"
+# pretrained_controlnet_path: "/private/workspace/zhm/sd/control_v11f1p_sd15_depth/"
+pretrained_controlnet_path: "/private/workspace/zhm/sd/sd-controlnet-depth/"
+
+control_config:
+  type: "depth"
+  control_scale: 0.95
+  unet_subfolder: "flat"
+
+train_data:
+  video_path: "videos/boxer-punching-towards-camera.mp4"
+  prompt: "A black boxer wearing black boxing gloves punches towards the camera"
+  n_sample_frames: 50
+  width: 512
+  height: 512
+  sample_start_idx: 0
+  sample_frame_rate: 2
+
+validation_data:
+  prompts:
+    - "A black boxer wearing black boxing gloves punches towards the camera, cartoon style"
+  video_length: 50
+  width: 512
+  height: 512
+  guidance_scale: 7.5  # sd原版推荐12，moxin是3.2， 其他推荐7.5
+  num_steps: 50
+  start: "noise"   # 之前测试是inversion更好
+  edit_type: "DDIM"
+
+learning_rate: 3e-5
+train_batch_size: 1
+max_train_steps: 300
+validation_steps: 100
+trainable_modules:
+  - "attn1.to_q"
+  - "attn2.to_q"
+  - "attn_temp"
+  - "norm_temp"
+  - "conv_temp"
+
+seed: 0
+mixed_precision: fp16
+gradient_checkpointing: True
+enable_xformers_memory_efficient_attention: True

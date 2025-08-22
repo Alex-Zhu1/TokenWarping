@@ -1,0 +1,44 @@
+pretrained_model_path: "/private/workspace/zhm/sd/stable-diffusion-v1-5/"
+output_dir: "outputs/woman"
+pretrained_controlnet_path: "/private/workspace/zhm/sd/sd-controlnet-canny/"
+
+control_config:
+  type: "canny"
+  low_threshold: 80
+  high_threshold: 100
+  control_scale: 0.85
+
+train_data:
+  video_path: "videos/woman.mp4"
+  prompt: "a woman running"
+  n_sample_frames: 22
+  width: 512
+  height: 512
+  sample_start_idx: 0
+  sample_frame_rate: 2
+
+validation_data:
+  prompts:
+    - "a sculpture of a woman running"
+  video_length: 22
+  width: 512
+  height: 512
+  guidance_scale: 7.5
+  num_steps: 50
+  start: "noise" # forward diffusion
+  edit_type: "DDIM"  # reserve diffusion
+
+learning_rate: 3e-5
+train_batch_size: 1
+max_train_steps: 80
+validation_steps: 20
+trainable_modules:
+  - "attn1.to_out"
+  - "attn_temp"
+  - "norm_temp"
+  - "conv_temp"
+
+seed: 0
+mixed_precision: fp16
+gradient_checkpointing: True
+enable_xformers_memory_efficient_attention: True

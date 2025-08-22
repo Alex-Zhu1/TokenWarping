@@ -1,0 +1,44 @@
+pretrained_model_path: "/home/zhm/model/sd/stable-diffusion-v1-5/"
+output_dir: ""    # "./outputs/v1_demo/pose/dance"
+pretrained_controlnet_path: '/home/zhm/model/sd/control_v11p_sd15_openpose/'
+# /home/zhm/model/sd/sd-controlnet-openpose/
+# "/home/zhm/model/sd/control_v11p_sd15_openpose/"
+control_config:
+  type: "openpose"
+  control_scale: 1.0
+
+train_data:
+  video_path: ""    # "./my_dataset/pose/dance"
+  prompt: ""
+  n_sample_frames: 22
+  width: 512
+  height: 512
+  sample_start_idx: 0
+  sample_frame_rate: 2
+
+validation_data:
+  prompts:
+    - ""
+  video_length: 22
+  width: 512
+  height: 512
+  guidance_scale: 7.5
+  num_steps: 50
+  start: "noise"
+  edit_type: "DDIM"
+
+learning_rate: 3e-5
+train_batch_size: 1
+max_train_steps: 1500
+validation_steps: 250
+trainable_modules:
+  - "attn1.to_q"
+  - "attn2.to_q"
+  - "attn_temp"
+  - "norm_temp"
+  - "conv_temp"
+
+seed: 33
+mixed_precision: fp16
+gradient_checkpointing: True
+enable_xformers_memory_efficient_attention: True

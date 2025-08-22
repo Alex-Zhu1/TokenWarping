@@ -1,0 +1,38 @@
+pretrained_model_path: "/private/workspace/zhm/sd/stable-diffusion-v1-5/"
+output_dir: './outputs_4_23_asia/'
+pretrained_controlnet_path: "/private/workspace/zhm/sd/control_v11f1p_sd15_depth/"
+
+control_config:
+  type: "depth"
+  control_scale: 0.95
+  unet_subfolder: "flat"
+
+train_data:
+  video_path: 'videos/spider.mp4'
+  prompt: "a person is dancing"
+  n_sample_frames: 150
+  width: 512
+  height: 512
+  sample_start_idx: 0
+  sample_frame_rate: 1
+
+validation_data:
+  prompts:
+    - "A cartoon spiderman in black suit, black shoes and white gloves is dancing"
+  video_length: 150
+  width: 512
+  height: 512
+  guidance_scale: 12
+  num_steps: 50
+  start: "inversion"
+  edit_type: "DDIM"
+
+learning_rate: 3e-5
+train_batch_size: 1
+max_train_steps: 300
+validation_steps: 100
+
+seed: 0
+mixed_precision: fp16
+gradient_checkpointing: True
+enable_xformers_memory_efficient_attention: True

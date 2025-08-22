@@ -1,0 +1,27 @@
+pretrained_model_path: "/home/haim/model_weight/sd/stable-diffusion-v1-5/"
+output_dir: ""    # "./outputs/v1_demo/pose/dance"
+pretrained_controlnet_path: "/home/haim/model_weight/sd/sd-controlnet-hed/"
+# pretrained_controlnet_path: "/private/workspace/zhm/sd/control_v11p_sd15_softedge/"
+
+control_config:
+  type: "hed"
+  control_scale: 0.95
+  unet_subfolder: "flat"
+
+validation_data:
+  prompts:
+    - "A white cat in pink background"
+  video_length: 16
+  width: 512  # 876
+  height: 512
+  guidance_scale: 7.5  # sd原版推荐12，moxin是3.2， 其他推荐7.5
+  num_steps: 50
+  start: "noise"
+  edit_type: "DDIM"
+  sample_start_idx: 0
+  sample_frame_rate: 1
+
+seed: 0
+mixed_precision: fp16
+gradient_checkpointing: True
+enable_xformers_memory_efficient_attention: True
