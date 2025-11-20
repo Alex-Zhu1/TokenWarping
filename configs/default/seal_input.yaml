@@ -5,20 +5,24 @@ pretrained_controlnet_path: "/mnt/data/users/haiming.zhu/weight/sd-controlnet-he
 
 control_config:
   type: "hed"
-  control_scale: 1.0
+  # type: "canny"
+  low_threshold: 50
+  high_threshold: 100
+  control_scale: 0.95
   unet_subfolder: "flat"
 
 train_data:
-  video_path: 
-  prompt: 
-  n_sample_frames: 160
+  video_path: "videos/seal_input.mp4"
+  prompt: "A man walks on the mountain carrying a guitar"
+  n_sample_frames: 16
   width: 512
   height: 512
 
+
 validation_data:
   prompts:
-    - "A woman swimming in the pool, white hair, cartoon style"
-  video_length: 160
+    - "A blue seal on the beach, cartoon style"
+  video_length: 600
   width: 512
   height: 512
   guidance_scale: 7.5  # sd原版推荐12，moxin是3.2， 其他推荐7.5
@@ -26,7 +30,7 @@ validation_data:
   start: "noise"
   edit_type: "DDIM"
   sample_start_idx: 0
-  sample_frame_rate: 4
+  sample_frame_rate: 1
 
 learning_rate: 3e-5
 train_batch_size: 1

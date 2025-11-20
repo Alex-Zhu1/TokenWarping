@@ -1,6 +1,6 @@
-pretrained_model_path: "/private/workspace/zhm/sd/stable-diffusion-v1-5/"
+pretrained_model_path: 'stablediffusionapi/rev-animated' 
 output_dir: ""    # "./outputs/v1_demo/pose/dance"
-pretrained_controlnet_path: "/private/workspace/zhm/sd/sd-controlnet-hed/"
+pretrained_controlnet_path: "/mnt/data/users/haiming.zhu/weight/sd-controlnet-hed/"
 # pretrained_controlnet_path: "/private/workspace/zhm/sd/control_v11p_sd15_softedge/"
 
 control_config:
@@ -14,8 +14,7 @@ train_data:
   n_sample_frames: 16
   width: 512
   height: 512
-  sample_start_idx: 0
-  sample_frame_rate: 5
+
 
 validation_data:
   prompts:
@@ -27,6 +26,8 @@ validation_data:
   num_steps: 50
   start: "noise"
   edit_type: "DDIM"
+  sample_start_idx: 0
+  sample_frame_rate: 5
 
 learning_rate: 3e-5
 train_batch_size: 1

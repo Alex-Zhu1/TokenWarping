@@ -19,14 +19,16 @@ train_data:
 
 validation_data:
   prompts:
-    - "A hand-drawn animatin of a fluffy wolf, cartoon style"
+    - "A hand-drawn animatin of a elephant, cartoon style"
   video_length: 40
   width: 512
   height: 512
   guidance_scale: 7.5
   num_steps: 50
-  start: "inversion" # forward diffusion
+  start: "noise" # forward diffusion
   edit_type: "DDIM"  # reserve diffusion
+  sample_start_idx: 0
+  sample_frame_rate: 1
 
 learning_rate: 3e-5
 train_batch_size: 1

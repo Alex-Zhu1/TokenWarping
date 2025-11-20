@@ -1,12 +1,13 @@
-pretrained_model_path: "/private/workspace/zhm/sd/stable-diffusion-v1-5/"
+# pretrained_model_path: 'stablediffusionapi/rev-animated' 
+pretrained_model_path: 'stablediffusionapi/flat-2d-animerge'
 output_dir: ""    # "./outputs/v1_demo/pose/dance"
-pretrained_controlnet_path: "/private/workspace/zhm/sd/sd-controlnet-hed/"
+pretrained_controlnet_path: "/mnt/data/users/haiming.zhu/weight/sd-controlnet-hed/"
 # pretrained_controlnet_path: "/private/workspace/zhm/sd/control_v11p_sd15_softedge/"
 
 control_config:
   type: "hed"
-  control_scale: 0.95
-  unet_subfolder: "flat"
+  control_scale: 1.0
+  unet_subfolder: "rev"
 
 train_data:
   video_path: "videos/paladin_input.mp4"
@@ -20,13 +21,15 @@ train_data:
 validation_data:
   prompts:
     - "A paladin walks in the dark forest carrying a holy sword"
-  video_length: 80
+  video_length: 250  # 80
   width: 512
   height: 512
   guidance_scale: 7.5  # sd原版推荐12，moxin是3.2， 其他推荐7.5
   num_steps: 50
   start: "noise"
   edit_type: "DDIM"
+  sample_start_idx: 0
+  sample_frame_rate: 1 # 2
 
 learning_rate: 3e-5
 train_batch_size: 1

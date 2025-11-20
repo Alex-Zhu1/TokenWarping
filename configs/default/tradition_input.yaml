@@ -1,10 +1,10 @@
-pretrained_model_path: "/private/workspace/zhm/sd/stable-diffusion-v1-5/"
+pretrained_model_path: "stablediffusionapi/ghostmix"
 output_dir: "outputs/tradition_input"    # "./outputs/v1_demo/pose/dance"
-pretrained_controlnet_path: "/private/workspace/zhm/sd/sd-controlnet-hed/"
+pretrained_controlnet_path: "/mnt/data/users/haiming.zhu/weight/sd-controlnet-hed/"
 
 control_config:
   type: "hed"
-  control_scale: 0.7  # 0.85
+  control_scale: 0.85  # 0.85
   unet_subfolder: "unet"
 
 train_data:
@@ -18,14 +18,16 @@ train_data:
 
 validation_data:
   prompts:
-    - "Traditional chinese ink painting of a traditional girl, hanfu"
-  video_length: 50
+    - "a traditional girl, hanfu, closed eyes"
+  video_length: 500
   width: 512
   height: 512
-  guidance_scale: 3.5   # 之前是12
+  guidance_scale: 7.5 
   num_steps: 50
   start: "noise"
   edit_type: "DDIM"
+  sample_start_idx: 0
+  sample_frame_rate: 1
 
 learning_rate: 3e-5
 train_batch_size: 1

@@ -1,6 +1,6 @@
-pretrained_model_path: "/private/workspace/zhm/sd/stable-diffusion-v1-5/"
+pretrained_model_path: 'stablediffusionapi/flat-2d-animerge'
 output_dir: ""    # "./outputs/v1_demo/pose/dance"
-pretrained_controlnet_path: "/private/workspace/zhm/sd/sd-controlnet-hed/"
+pretrained_controlnet_path: "/mnt/data/users/haiming.zhu/weight/sd-controlnet-hed/"
 # pretrained_controlnet_path: "/private/workspace/zhm/sd/control_v11p_sd15_softedge/"
 
 control_config:
@@ -11,22 +11,22 @@ control_config:
 train_data:
   video_path: 
   prompt: 
-  n_sample_frames: 160
+  n_sample_frames: 60
   width: 512
   height: 512
-  sample_start_idx: 0
-  sample_frame_rate: 1
 
 validation_data:
   prompts:
-    - "A beautiful woman with headphones listening to music in CG cyberpunk style, neon, closed eyes, colorful"
-  video_length: 160
+    - "A beautiful woman with blue headphones listening to music, closed eyes"
+  video_length: 500
   width: 512
   height: 512
   guidance_scale: 7.5  # sd原版推荐12，moxin是3.2， 其他推荐7.5
   num_steps: 50
   start: "noise"
   edit_type: "DDIM"
+  sample_start_idx: 0
+  sample_frame_rate: 1
 
 learning_rate: 3e-5
 train_batch_size: 1
