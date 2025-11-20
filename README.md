@@ -1,5 +1,4 @@
 <p align="center">
-  <h3 align="center"><strong>[TVCG 2025]</strong></h3>
   <a href="https://github.com/Alex-Zhu1/TokenWarping">
     <img src="assert/teaser.png" alt="TokenWarping Teaser" width="100%">
   </a>
@@ -7,6 +6,7 @@
 
 <h1 align="center"><strong>TokenWarping</strong></h1>
 <h3 align="center">Zero-Shot Video Translation via Token Warping in Self-Attention</h3>
+<h4 align="center">IEEE TVCG 2025</h4>
 
 <div align="center">
 
