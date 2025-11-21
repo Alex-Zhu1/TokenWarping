@@ -54,14 +54,14 @@ With batch-infer enabled, the pipeline can process up to ~120 frames on a typica
 If you find our work helpful in your project, please cite:
 
 ```BiBTeX
-@misc{zhu2025stablescoredistillation,
-      title={Stable Score Distillation}, 
-      author={Haiming Zhu and Yangyang Xu and Chenshu Xu and Tingrui Shen and Wenxi Liu and Yong Du and Jun Yu and Shengfeng He},
+@misc{zhu2025zeroshotvideotranslationtoken,
+      title={Zero-Shot Video Translation via Token Warping}, 
+      author={Haiming Zhu and Yangyang Xu and Jun Yu and Shengfeng He},
       year={2025},
-      eprint={2507.09168},
+      eprint={2402.12099},
       archivePrefix={arXiv},
       primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2507.09168}, 
+      url={https://arxiv.org/abs/2402.12099}, 
 }
 ```
 
