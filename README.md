@@ -10,7 +10,7 @@
 
 <div align="center">
 
-[![Paper](https://img.shields.io/badge/arXiv-2507.09168-b31b1b.svg)](https://arxiv.org/abs/2507.09168)
+[![Paper](https://img.shields.io/badge/arXiv-2507.09168-b31b1b.svg)](http://arxiv.org/abs/2402.12099)
 
 </div>
 
