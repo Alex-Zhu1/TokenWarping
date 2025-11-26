@@ -1,24 +1,23 @@
-<p align="center">
-  <a href="https://github.com/Alex-Zhu1/TokenWarping">
-    <img src="assert/teaser.png" alt="TokenWarping Teaser" width="100%">
-  </a>
-</p>
-
-<h1 align="center"><strong>TokenWarping</strong></h1>
-<h3 align="center">Zero-Shot Video Translation via Token Warping in Self-Attention</h3>
+<!-- <h1 align="center"><strong>TokenWarping</strong></h1> -->
+<h3 align="center">Zero-Shot Video Translation via Token Warping</h3>
 <h4 align="center">IEEE TVCG 2025</h4>
 
 <div align="center">
 
-[![Paper](https://img.shields.io/badge/arXiv-2507.09168-b31b1b.svg)](http://arxiv.org/abs/2402.12099)
+[![arXiv paper 2402.12099 badge with red background](https://img.shields.io/badge/arXiv-2507.09168-b31b1b.svg)](http://arxiv.org/abs/2402.12099) [![Project page link badge with blue background](https://img.shields.io/badge/Project-Page-blue)](https://alex-zhu1.github.io/TokenWarping/)
 
 </div>
 
 <p align="center">
   ⚡ <strong>Training-free • Inversion-free • Zero-shot</strong> ⚡<br>
-  Video-to-video translation via token warping inside self-attention
+  Video-to-video translation via token warping in self-attention
 </p>
 
+<p align="center">
+  <a href="https://github.com/Alex-Zhu1/TokenWarping">
+    <img src="assert/teaser.png" alt="TokenWarping Teaser" width="100%">
+  </a>
+</p>
 
 ## Contents
 <!-- - [Demo Videos](#demo-videos)
@@ -37,8 +36,7 @@ We provide an [environment.yaml](https://github.com/Alex-Zhu1/TokenWarping/blob/
 
 ## Command Line
 
-Please try our demo by running  
-[`main_hack.py`](https://github.com/Alex-Zhu1/TokenWarping/blob/main/main_hack.py).
+Please try our demo by running [`main_hack.py`](https://github.com/Alex-Zhu1/TokenWarping/blob/main/main_hack.py)
 
 Due to limited GPU memory, we also provide a **batch-infer** mode for longer videos.  
 To enable it, modify **main_hack.py** as follows:
@@ -47,7 +45,7 @@ To enable it, modify **main_hack.py** as follows:
 from infer_batch import main  # flow prediction uses 8-frame batch-infer
 ```
 
-With batch-infer enabled, the pipeline can process up to ~120 frames on a typical GPU.
+With batch-infer enabled, the pipeline can process up to ~120 frames on a typical 24 GB GPU.
 
 ## Citation
 
