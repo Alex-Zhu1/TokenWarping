@@ -52,15 +52,15 @@ With batch-infer enabled, the pipeline can process up to ~120 frames on a typica
 If you find our work helpful in your project, please cite:
 
 ```BiBTeX
-@misc{zhu2025zeroshotvideotranslationtoken,
-      title={Zero-Shot Video Translation via Token Warping}, 
-      author={Haiming Zhu and Yangyang Xu and Jun Yu and Shengfeng He},
-      year={2025},
-      eprint={2402.12099},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2402.12099}, 
-}
+@ARTICLE{11269750,
+  author={Zhu, Haiming and Xu, Yangyang and Yu, Jun and He, Shengfeng},
+  journal={IEEE Transactions on Visualization and Computer Graphics}, 
+  title={Zero-Shot Video Translation via Token Warping}, 
+  year={2025},
+  volume={},
+  number={},
+  pages={1-11},
+  doi={10.1109/TVCG.2025.3636949}}
 ```
 
 ## Acknowledgement
