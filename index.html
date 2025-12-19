@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TokenWarping - Zero-Shot Video Translation</title>
-
     <style>
         * {
             margin: 0;
@@ -12,221 +11,1223 @@
             box-sizing: border-box;
         }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #f4f5f7;
-            min-height: 100vh;
-            padding: 20px;
+        :root {
+            --primary: #6f73d2;
+            --primary-dark: #5a5eb8;
+            --secondary: #7b5fc6;
+            --bg-light: #f8f9fa;
+            --text-dark: #1a1a1a;
+            --text-muted: #6c757d;
+            --shadow: 0 10px 40px rgba(0,0,0,0.1);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.15);
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background: var(--bg-light);
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            z-index: 1000;
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .nav.visible {
+            transform: translateY(0);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-title {
+            font-weight: 700;
+            font-size: 1.1em;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9em;
+            transition: color 0.2s;
+            position: relative;
+            white-space: nowrap;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Back to top button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: var(--shadow);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s;
+            z-index: 999;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Container */
         .container {
-            max-width: 1000px;
+            max-width: 1400px;
             margin: 0 auto;
             background: white;
-            border-radius: 18px;
-            box-shadow: 0 16px 50px rgba(0,0,0,0.25);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 40px 70px;
+            text-align: center;
+            position: relative;
             overflow: hidden;
         }
 
-        /* ================= Header ================= */
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="40" fill="rgba(255,255,255,0.05)"/></svg>');
+            animation: float 20s linear infinite;
+        }
 
-        header {
-            background: linear-gradient(135deg, #6f73d2 0%, #7b5fc6 100%);
-            color: white;
-            padding: 64px 40px 56px;
-            text-align: center;
+        @keyframes float {
+            from { transform: translate(0, 0); }
+            to { transform: translate(100px, 100px); }
+        }
+
+        header > * {
+            position: relative;
+            z-index: 1;
         }
 
         h1 {
-            font-size: 2.6em;
-            font-weight: 700;
-            margin-bottom: 12px;
-            letter-spacing: 0.5px;
+            font-size: 2.8em;
+            font-weight: 800;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+            animation: fadeInUp 0.8s ease;
         }
 
         h2 {
-            font-size: 1.75em;
-            font-weight: 400;
-            margin-bottom: 18px;
+            font-size: 1.5em;
+            font-weight: 300;
+            margin-bottom: 25px;
             opacity: 0.95;
+            animation: fadeInUp 0.8s ease 0.2s both;
         }
 
-        .authors {
-            font-size: 1.15em;
-            margin-bottom: 8px;
-            line-height: 1.8;
-            color: rgba(255, 255, 255, 0.95);
-        }
-
-        .authors a {
-            color: rgba(255, 255, 255, 0.95);
-            font-weight: 500;
-            text-decoration: none;
-        }
-
-        .authors a:hover {
-            text-decoration: underline;
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .venue {
-            font-size: 1.55em;
-            opacity: 0.9;
-            margin-bottom: 28px;
+            display: inline-block;
+            font-size: 1.3em;
+            padding: 8px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            margin-bottom: 30px;
+            animation: fadeInUp 0.8s ease 0.3s both;
+        }
+
+        .authors {
+            font-size: 1.1em;
+            margin-bottom: 35px;
+            line-height: 1.9;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+
+        .authors a {
+            color: white;
+            font-weight: 500;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .authors a:hover {
+            opacity: 0.8;
         }
 
         .badges {
             display: flex;
-            gap: 14px;
+            gap: 15px;
             justify-content: center;
             flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease 0.5s both;
         }
 
         .badge {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 11px 22px;
+            padding: 12px 24px;
             background: white;
-            color: #6f73d2;
+            color: var(--primary);
             text-decoration: none;
-            border-radius: 28px;
+            border-radius: 30px;
             font-weight: 600;
             font-size: 0.95em;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         .badge:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
         }
 
         .features {
-            margin-top: 26px;
+            margin-top: 35px;
             font-size: 1.05em;
-            opacity: 0.95;
+            padding: 20px 30px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 0.8s ease 0.6s both;
         }
 
-        /* ================= Main ================= */
-
+        /* Main Content */
         main {
-            padding: 42px;
+            padding: 60px 40px;
         }
 
         section {
-            margin-bottom: 48px;
+            margin-bottom: 80px;
+            animation: fadeIn 0.6s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         h3 {
-            font-size: 1.8em;
-            color: #6f73d2;
-            margin-bottom: 24px;
-            padding-bottom: 10px;
-            border-bottom: 3px solid #6f73d2;
+            font-size: 2em;
+            color: var(--primary);
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--primary);
+            position: relative;
+        }
+
+        h3::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: var(--secondary);
         }
 
         p {
             text-align: justify;
-            line-height: 1.8;
+            line-height: 1.9;
             font-size: 1.05em;
+            color: #333;
         }
 
         .overview-image {
             width: 100%;
-            max-height: 480px;
+            max-height: 500px;
             object-fit: contain;
-            border-radius: 10px;
-            box-shadow: 0 4px 18px rgba(0,0,0,0.12);
-            margin-top: 18px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-top: 25px;
+            transition: transform 0.3s;
         }
 
-        a {
-            color: #6f73d2;
-            text-decoration: none;
+        .overview-image:hover {
+            transform: scale(1.02);
         }
 
-        a:hover {
-            text-decoration: underline;
-        }
-
+        /* Code block */
         pre {
-            background: #f5f5f5;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
             color: #333;
-            padding: 20px;
-            border-radius: 8px;
+            padding: 25px;
+            border-radius: 12px;
             overflow-x: auto;
-            margin-top: 14px;
+            margin-top: 20px;
             font-size: 0.9em;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
         code {
-            font-family: 'Courier New', monospace;
+            font-family: 'Monaco', 'Courier New', monospace;
+        }
+
+        /* Video sections */
+        .section-intro {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 25px 30px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            border-left: 4px solid var(--primary);
+            font-size: 1.05em;
+            line-height: 1.8;
+        }
+
+        .section-intro strong {
+            color: var(--primary);
+        }
+
+        .video-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .video-item {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            flex: 0 1 180px;
+        }
+
+        .video-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .video-item video {
+            width: 100%;
+            height: auto;
+            display: block;
+            background: #000;
+        }
+
+        .video-caption {
+            padding: 15px;
+            text-align: center;
+            font-weight: 500;
+            background: #f8f9fa;
+            min-height: 65px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95em;
+        }
+
+        .video-caption .highlight {
+            color: #dc3545;
+            font-weight: 600;
+        }
+
+        /* Comparison sections */
+        .comparison-title {
+            text-align: center;
+            font-size: 1.3em;
+            padding: 20px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        .comparison-title .highlight {
+            font-weight: 700;
+            text-decoration: underline;
+        }
+
+        .method-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+
+        .divider {
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--primary), transparent);
+            margin: 60px 0;
+        }
+
+        /* Ablation sections */
+        .ablation-info {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            font-size: 1.05em;
+        }
+
+        .ablation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.2em;
+            }
+
+            main {
+                padding: 40px 20px;
+            }
+
+            header {
+                padding: 60px 20px 50px;
+            }
+
+            .nav-content {
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                gap: 10px;
+                font-size: 0.85em;
+            }
+
+            .video-row {
+                flex-direction: column;
+            }
+
+            .video-item {
+                flex: 1 1 100%;
+            }
+
+            .method-grid,
+            .ablation-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+            }
         }
     </style>
 </head>
-
 <body>
-<div class="container">
-
-    <header>
-        <!-- <h1>TokenWarping</h1> -->
-        <h2>Zero-Shot Video Translation via Token Warping</h2>
-        <div class="venue">IEEE TVCG 2025</div>
-
-
-        <div class="authors">
-            <a href="https://alex-zhu1.github.io/" target="_blank" rel="noopener noreferrer">Haiming Zhu</a>,
-            <a href="https://cnnlstm.github.io/" target="_blank" rel="noopener noreferrer">Yangyang Xu</a>,
-            Jun Yu,
-            <a href="https://shengfenghe.github.io/" target="_blank" rel="noopener noreferrer">Shengfeng He</a>
+    <!-- Navigation -->
+    <nav class="nav" id="navbar">
+        <div class="nav-content">
+            <div class="nav-title">TokenWarping</div>
+            <div class="nav-links">
+                <a href="#abstract">Abstract</a>
+                <a href="#overview">Overview</a>
+                <a href="#longer-videos">Longer Videos</a>
+                <a href="#optical-flow">Optical Flow</a>
+                <a href="#pose-editing">Pose Editing</a>
+                <a href="#comparison">SOTA Comparison</a>
+                <a href="#inversion">Inversion</a>
+                <a href="#ablations">Ablations</a>
+                <a href="#challenging">Challenging Cases</a>
+                <a href="#citation">Citation</a>
+            </div>
         </div>
+    </nav>
 
-        <div class="badges">
-            <a href="https://arxiv.org/abs/2402.12099" class="badge" target="_blank" rel="noopener noreferrer">📄 arXiv</a>
-            <a href="https://github.com/Alex-Zhu1/TokenWarping" class="badge" target="_blank" rel="noopener noreferrer">💻 Code</a>
-            <a href="https://alex-zhu1.github.io/TokenWarping/video" class="badge" target="_blank" rel="noopener noreferrer">🎥 Video</a>
-        </div>
+    <!-- Back to top button -->
+    <button class="back-to-top" id="backToTop">↑</button>
 
-        <div class="features">
-            ⚡ <strong>Training-free • Inversion-free • Zero-shot</strong> ⚡<br>
-            Video-to-video translation via token warping in self-attention
-        </div>
-    </header>
+    <div class="container">
+        <header>
+            <h1>TokenWarping</h1>
+            <h2>Zero-Shot Video Translation via Token Warping</h2>
+            <div class="venue">IEEE TVCG 2025</div>
 
-    <main>
+            <div class="authors">
+                <a href="https://alex-zhu1.github.io/" target="_blank">Haiming Zhu</a>,
+                <a href="https://cnnlstm.github.io/" target="_blank">Yangyang Xu</a>,
+                Jun Yu,
+                <a href="https://shengfenghe.github.io/" target="_blank">Shengfeng He</a>
+            </div>
 
-        <section>
-            <h3>Abstract</h3>
-            <p>
-                With the revolution of generative AI, video-related tasks have been widely studied. However, current state-of-the-art video models still lag behind image models in visual quality and user control over generated content. In this paper, we introduce TokenWarping, a novel framework for temporally coherent video translation. Existing diffusion-based video editing approaches rely solely on key and value patches in self-attention to ensure temporal consistency, often sacrificing the preservation of local and structural regions. Critically, these methods overlook the significance of the query patches in achieving accurate feature aggregation and temporal coherence. In contrast, TokenWarping leverages complementary token priors by constructing temporal correlations across different frames. Our method begins by extracting optical flows from source videos. During the denoising process of the diffusion model, these optical flows are used to warp the previous frame's query, key, and value patches, aligning them with the current frame's patches. By directly warping the query patches, we enhance feature aggregation in self-attention, while warping the key and value patches ensures temporal consistency across frames. This token warping imposes explicit constraints on the self-attention layer outputs, effectively ensuring temporally coherent translation. Our framework does not require any additional training or fine-tuning and can be seamlessly integrated with existing text-to-image editing methods. We conduct extensive experiments on various video translation tasks, demonstrating that TokenWarping surpasses state-of-the-art methods both qualitatively and quantitatively.
-            </p>
-        </section>
+            <div class="badges">
+                <a href="https://arxiv.org/abs/2402.12099" class="badge" target="_blank">📄 arXiv</a>
+                <a href="https://github.com/Alex-Zhu1/TokenWarping" class="badge" target="_blank">💻 Code</a>
+                <a href="https://alex-zhu1.github.io/TokenWarping/video" class="badge" target="_blank">🎥 Video</a>
+            </div>
 
-        <section class="overview-section">
-            <h3>Overview</h3>
-            <figure>
-                <img
-                    src="https://raw.githubusercontent.com/Alex-Zhu1/TokenWarping/project/assets/overview_tvcg.png"
-                    alt="TokenWarping Overview"
-                    class="overview-image"
-                >
-                <!-- <figcaption>Illustration of the TokenWarping pipeline, showing how query, key, and value patches are warped using optical flows for temporally coherent video translation.</figcaption> -->
-            </figure>
-        </section>
+            <div class="features">
+                ⚡ <strong>Training-free • Inversion-free • Zero-shot</strong> ⚡<br>
+                Video-to-video translation via token warping in self-attention
+            </div>
+        </header>
 
+        <main>
+            <section id="abstract">
+                <h3>Abstract</h3>
+                <p>
+                    With the revolution of generative AI, video-related tasks have been widely studied. However, current state-of-the-art video models still lag behind image models in visual quality and user control over generated content. In this paper, we introduce TokenWarping, a novel framework for temporally coherent video translation. Existing diffusion-based video editing approaches rely solely on key and value patches in self-attention to ensure temporal consistency, often sacrificing the preservation of local and structural regions. Critically, these methods overlook the significance of the query patches in achieving accurate feature aggregation and temporal coherence. In contrast, TokenWarping leverages complementary token priors by constructing temporal correlations across different frames. Our method begins by extracting optical flows from source videos. During the denoising process of the diffusion model, these optical flows are used to warp the previous frame's query, key, and value patches, aligning them with the current frame's patches. By directly warping the query patches, we enhance feature aggregation in self-attention, while warping the key and value patches ensures temporal consistency across frames. This token warping imposes explicit constraints on the self-attention layer outputs, effectively ensuring temporally coherent translation. Our framework does not require any additional training or fine-tuning and can be seamlessly integrated with existing text-to-image editing methods. We conduct extensive experiments on various video translation tasks, demonstrating that TokenWarping surpasses state-of-the-art methods both qualitatively and quantitatively.
+                </p>
+            </section>
 
+            <section id="overview">
+                <h3>Overview</h3>
+                <figure>
+                    <img
+                        src="https://raw.githubusercontent.com/Alex-Zhu1/TokenWarping/project/assets/overview_tvcg.png"
+                        alt="TokenWarping Overview"
+                        class="overview-image"
+                    >
+                </figure>
+            </section>
+
+            <section id="longer-videos">
+                <h3>Longer Video Results</h3>
+                
+                <div class="section-intro">
+                    <strong>Extended Sequences:</strong> Our method successfully handles videos with 120-240 frames, demonstrating robust temporal consistency across extended sequences.
+                </div>
+
+                <div class="video-row">
+                    <div class="video-item">
+                        <video src="assets/longer/music_input.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Input (240 frames)</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/longer/Music_ours.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption"><span class="highlight">Blue headphones</span>, closed eyes</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/longer/paladin_input.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Input (240 frames)</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/longer/Paladin_ours.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption"><span class="highlight">Dark forest</span>, holy sword</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/longer/pool_input.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Input (120 frames)</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/longer/pool_ours.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption"><span class="highlight">White hair</span>, cartoon style</div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <section id="optical-flow">
+                <h3>Optical Flow Results</h3>
+
+                <div class="video-row">
+                    <div class="video-item">
+                        <video src="assets/compare/olderman1/olderman_input.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Input (60 frames)</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/olderman1/olderman_flat_cg.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption"><span class="highlight">CG style</span></div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/olderman1/olderman_grandpa_ours.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption"><span class="highlight">Handsome grandpa</span>, white hair</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/more/swan28/source_video.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Input</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/more/swan28/A white swan, in the ice and snow.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption"><span class="highlight">White, snow</span></div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/more/swan28/painting of Van Gogh, a swan.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption"><span class="highlight">Van Gogh style</span></div>
+                    </div>
+                </div>
+
+                <div class="video-row">
+                    <div class="video-item">
+                        <video src="assets/more/modeler28/modeler_input.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Input</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/more/modeler28/modeler_female.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption"><span class="highlight">Snow, scarf</span>, cartoon style</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/more/modeler28/modeler_cheongsam.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption"><span class="highlight">Cheongsam</span>, scarf, cartoon</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/more/fox25/fox_input.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Input (52 frames)</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/more/fox25/fox_pink.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption"><span class="highlight">Pink, CG style</span></div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/more/fox25/fox_blue.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption"><span class="highlight">Blue</span></div>
+                    </div>
+                </div>
+
+                <div class="video-row">
+                    <div class="video-item">
+                        <video src="assets/more/coffee28/coffee_input.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Input</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/more/coffee28/coffee_beans_ours.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Cartoon style</div>
+                    </div>
+                    <div class="video-item" style="flex: 0 1 180px;">
+                        <video src="assets/more/move_cat25/move_cat_input.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Input (80 frames)</div>
+                    </div>
+                    <div class="video-item" style="flex: 0 1 180px;">
+                        <video src="assets/more/move_cat25/move_cat_ours.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Cartoon style</div>
+                    </div>
+                    <div class="video-item" style="flex: 0 1 150px;">
+                        <video src="assets/more/sunflower25/sunflower_input.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Input</div>
+                    </div>
+                    <div class="video-item" style="flex: 0 1 150px;">
+                        <video src="assets/more/sunflower25/sunflower_cotton_ours.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption"><span class="highlight">Cotton</span></div>
+                    </div>
+                    <div class="video-item" style="flex: 0 1 150px;">
+                        <video src="assets/more/sunflower25/sunflower_sunflower_ours.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption"><span class="highlight">Sunflower</span></div>
+                    </div>
+                </div>
+
+                <div class="video-row">
+                    <div class="video-item">
+                        <video src="assets/more/smile_input.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Input</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/more/smile_ours.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Cartoon style</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/more/smile_white.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption"><span class="highlight">White top</span></div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/more/walk128/walk1_input.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Input</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/more/walk128/walk1_cartoon.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Cartoon style</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/more/walk128/walk1_cg2.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">CG style</div>
+                    </div>
+                </div>
+
+                <div class="video-row">
+                    <div class="video-item">
+                        <video src="assets/more/woman/source_video.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Input</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/more/woman/A marble sculpture of a woman running.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption"><span class="highlight">Marble sculpture</span></div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/more/woman/white ancient Greek sculpture of a woman running.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption"><span class="highlight">Greek sculpture</span></div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <section id="pose-editing">
+                <h3>Appearance Flow for Large Gap Editing</h3>
+                
+                <div class="section-intro">
+                    <strong>Human Pose Editing:</strong> Using appearance flow to handle large editing gaps with pose conditioning.
+                </div>
+
+                <div class="video-row">
+                    <div class="video-item">
+                        <video src="assets/more/large_edit/dance5/dance5_input.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Input</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/more/large_edit/dance5/dance5_condition.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Condition</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/more/large_edit/dance5/dance5_pixar.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Pixar style</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/more/large_edit/dance5/dance5_panda.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Panda with moon</div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="divider"></div>
+
+                        <section id="comparison">
+                <h3>Comparison with State-of-the-Art Methods</h3>
+
+                <div class="comparison-title">
+                    <span class="highlight">Hand-drawn animation</span> of a fluffy wolf, cartoon style
+                </div>
+                <div class="method-grid">
+                    <div class="video-item">
+                        <video src="assets/compare/wolf23/wolf_input.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Input Video</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/wolf23/wolf_ours.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Ours</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/wolf23/wolf_fresco.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">FRESCO</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/wolf23/wolf_flatten.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Flatten</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/wolf23/wolf_tflow.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">TokenFlow</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/wolf23/wolf_CV.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">ControlVideo</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/wolf23/wolf_RAV.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Rerender</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/wolf23/wolf_T2V.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Text-to-Video-Zero</div>
+                    </div>
+                </div>
+
+                <div class="comparison-title">
+                    <span class="highlight">Orange SUV</span> in sunny snow winter
+                </div>
+                <div class="method-grid">
+                    <div class="video-item">
+                        <video src="assets/compare/car1/car_input.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Input Video</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/car1/car_ours.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Ours</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/car1/car_fresco.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">FRESCO</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/car1/car_flatten.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Flatten</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/car1/car_TFpnp.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">TokenFlow</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/car1/car_CV.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">ControlVideo</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/car1/car_REV.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Rerender</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/car1/car_T2V.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Text-to-Video-Zero</div>
+                    </div>
+                </div>
+
+                <div class="comparison-title">
+                    A cartoon <span class="highlight">Spiderman</span> in black suit, black shoes is dancing
+                </div>
+                <div class="method-grid">
+                    <div class="video-item">
+                        <video src="assets/compare/spider/dance_spiderman_input.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Input Video</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/spider/spider_ours.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Ours</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/spider/spider_fresco.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">FRESCO</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/spider/spider_flatten.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Flatten</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/spider/spider_TFpnp.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">TokenFlow</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/spider/spider_CV.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">ControlVideo</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/spider/spider_rerender.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Rerender</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/spider/spider_T2V.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Text-to-Video-Zero</div>
+                    </div>
+                </div>
+
+                <div class="comparison-title">
+                    A black boxer wearing black boxing gloves punches towards the camera, <span class="highlight">cartoon style</span>
+                </div>
+                <div class="method-grid">
+                    <div class="video-item">
+                        <video src="assets/compare/boxer/boxer_cartoon_input.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Input Video</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/boxer/boxer_ours.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Ours</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/boxer/boxer_cartoon_fresco.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">FRESCO</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/boxer/boxer_flatten.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Flatten</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/boxer/boxer_cartoon_TFpnp.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">TokenFlow</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/boxer/boxer_cartoon_CV.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">ControlVideo</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/boxer/boxer_cartoon_rerender.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Rerender</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/boxer/boxer_cartoon_T2VZ.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Text-to-Video-Zero</div>
+                    </div>
+                </div>
+
+                <div class="comparison-title">
+                    A <span class="highlight">white deer</span> in the snow
+                </div>
+                <div class="method-grid">
+                    <div class="video-item">
+                        <video src="assets/compare/deer/deer_white_input.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Input Video</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/deer/deer_ours.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Ours</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/deer/deer_fresco.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">FRESCO</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Flatten: Error creating optical flow index</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/deer/deer_white_TFpnp.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">TokenFlow</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/deer/deer_white_CV.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">ControlVideo</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/deer/deer_white_rerender.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Rerender</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/deer/deer_white_T2VZ.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Text-to-Video-Zero</div>
+                    </div>
+                </div>
+
+                <div class="comparison-title">
+                    A <span class="highlight">white</span> cat in <span class="highlight">pink</span> background
+                </div>
+                <div class="method-grid">
+                    <div class="video-item">
+                        <video src="assets/compare/cat/cat_white_input.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Input Video</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/cat/cat_ours.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Ours</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/cat/cat_white_fresco.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">FRESCO</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Flatten: Error creating optical flow index</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/cat/cat_white_TFpnp.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">TokenFlow</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/cat/cat_white_CV.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">ControlVideo</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/cat/cat_white_rerender.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Rerender</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/cat/cat_white_T2VZ.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Text-to-Video-Zero</div>
+                    </div>
+                </div>
+
+                <div class="comparison-title">
+                    <span class="highlight">Cartoon style</span>, a man, in a castle
+                </div>
+                <div class="method-grid">
+                    <div class="video-item">
+                        <video src="assets/compare/olderman1/olderman_input.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Input Video</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/olderman1/castle_ours.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Ours</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/olderman1/castle_fresco.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">FRESCO</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/olderman1/castle_flatten.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Flatten</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/olderman1/castle_tfpnp.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">TokenFlow</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/olderman1/castle_CV.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">ControlVideo</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/olderman1/castle_RAV.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Rerender</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/olderman1/castle_T2V-zero.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Text-to-Video-Zero</div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <section id="inversion">
+                <h3>Comparison Results with Inversion Code</h3>
+
+                <div class="comparison-title">
+                    A <span class="highlight">sculpture</span> of a woman running
+                </div>
+                <div class="method-grid">
+                    <div class="video-item">
+                        <video src="assets/compare/woman23/woman_input.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Input Video</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/woman23/woman_ours.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Ours</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/woman23/woman_fresco.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">FRESCO</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/woman23/woman_flatten8.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Flatten</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/woman23/woman_TFpnp.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">TokenFlow</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/woman23/woman_CV.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">ControlVideo</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/woman23/woman_RAV.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Rerender</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/woman23/woman_T2V.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Text-to-Video-Zero</div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <section id="ablations">
+                <h3>Ablations</h3>
+
+                <div class="ablation-info">
+                    <strong>Exp1:</strong> Combining anchor token and warped token yields superior results.
+                </div>
+
+                <div class="comparison-title">
+                    A <span class="highlight">white deer</span> in the snow
+                </div>
+
+                <div class="method-grid">
+                    <div class="video-item">
+                        <video src="assets/compare/deer_ab/deer_q.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Only warping query token</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/deer_ab/deer_q+kv_first.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Warping query + first KV</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/deer_ab/deer_q+kv_warp.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Warping query + warping KV</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/deer_ab/deer_qkv.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Full: warping query + [first KV, warping KV]</div>
+                    </div>
+                </div>
+
+                <div class="ablation-info">
+                    <strong>Exp2:</strong> Aligned query patches facilitate correct feature aggregation in attention mechanisms.
+                </div>
+
+                <div class="comparison-title">
+                    A <span class="highlight">white cat</span> in <span class="highlight">pink</span> background
+                </div>
+
+                <div class="method-grid">
+                    <div class="video-item">
+                        <video src="assets/compare/cat/cat_white_input.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Input</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/cat_ab/cat_w_kv.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Warping KV, no warping query</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/cat_ab/cat_attn_fea.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Warping attention-output features</div>
+                    </div>
+                    <div class="video-item">
+                        <video src="assets/compare/cat/cat_ours.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Full (Ours)</div>
+                    </div>
+                </div>
+
+                <div class="ablation-info">
+                    <strong>Exp3:</strong> ControlNet provides the source video's structure, aiding flow propagation.
+                </div>
+
+                <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin: 40px 0;">
+                    <div class="video-item" style="flex: 0 1 380px; max-width: 420px;">
+                        <video src="assets/compare/cat_ab/control.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">ControlNet input</div>
+                    </div>
+                    <div class="video-item" style="flex: 0 1 380px; max-width: 420px;">
+                        <video src="assets/compare/cat_ab/cat_wo_controlnet.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Results without ControlNet</div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <section id="challenging">
+                <h3>Challenging Cases</h3>
+
+                <div class="ablation-info">
+                    <strong>Single scene:</strong> Our aligned QKV flow-based attention can <span style="color: #0011ff;">tolerate flow errors</span> in scenarios involving <span class="highlight">single objects and simple backgrounds</span>.
+                </div>
+
+                <div class="video-row" style="gap: 30px; justify-content: center;">
+                    <div class="video-item" style="flex: 0 1 380px; max-width: 240px;">
+                        <video src="assets/compare/cat/cat_white_input.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Input</div>
+                    </div>
+                    <div class="video-item" style="flex: 0 1 380px; max-width: 240px;">
+                        <video src="assets/compare/cat_ab/control.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Condition input</div>
+                    </div>
+                    <div class="video-item" style="flex: 0 1 380px; max-width: 240px;">
+                        <video src="assets/compare/cat/cat_ours.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">A white cat in pink background</div>
+                    </div>
+                    <div class="video-item" style="flex: 0 1 380px; max-width: 240px;">
+                        <video src="assets/compare/cat_ab/cat_flow.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Backward flow</div>
+                    </div>
+                    <div class="video-item" style="flex: 0 1 380px; max-width: 240px;">
+                        <video src="assets/compare/cat_ab/cat_occ.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Backward flow occlusion mask</div>
+                    </div>
+                </div>
+
+                <div class="ablation-info">
+                    <strong>Complex scene:</strong> Changing the color of a shopping bag results in <span style="color: #0011ff;">optical flow failure</span> caused by <span class="highlight">scene changes</span>. This limitation will be addressed in future work.
+                </div>
+
+                <div class="video-row" style="gap: 30px; justify-content: center;">
+                    <div class="video-item" style="flex: 0 1 380px; max-width: 240px;">
+                        <video src="assets/more/kk_failure28/kk_input.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Input</div>
+                    </div>
+                    <div class="video-item" style="flex: 0 1 380px; max-width: 240px;">
+                        <video src="assets/more/kk_failure28/kk_condi.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Condition input</div>
+                    </div>
+                    <div class="video-item" style="flex: 0 1 380px; max-width: 240px;">
+                        <video src="assets/more/kk_failure28/kk_ours.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">White hair, white top and jeans, CG style</div>
+                    </div>
+                    <div class="video-item" style="flex: 0 1 380px; max-width: 240px;">
+                        <video src="assets/more/kk_failure28/kk_flow.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Backward flow</div>
+                    </div>
+                    <div class="video-item" style="flex: 0 1 380px; max-width: 240px;">
+                        <video src="assets/more/kk_failure28/kk_occ.mp4" autoplay loop muted playsinline></video>
+                        <div class="video-caption">Occlusion mask</div>
+                    </div>
+                </div>
+            </section>
 
         <section>
             <h3>Citation</h3>
             <p>If you find our work helpful, please consider citing:</p>
-            <pre><code>@ARTICLE{11269750,
-                author  = {Zhu, Haiming and Xu, Yangyang and Yu, Jun and He, Shengfeng},
-                journal = {IEEE Transactions on Visualization \& Computer Graphics},
-                title   = {Zero-Shot Video Translation via Token Warping},
-                year    = {2025},
-                doi     = {10.1109/TVCG.2025.3636949}
-}</code></pre>
+            <pre><code>@article{article,
+          author = {Zhu, Haiming and Xu, Yangyang and Yu, Jun and He, Shengfeng},
+          year = {2025},
+          month = {11},
+          pages = {1-11},
+          title = {Zero-Shot Video Translation via Token Warping},
+          volume = {PP},
+          journal = {IEEE Transactions on Visualization and Computer Graphics},
+          doi = {10.1109/TVCG.2025.3636949}
+          }
+          }</code></pre>
         </section>
 
         <section>
@@ -240,7 +1241,7 @@
             </p>
         </section>
 
-    </main>
-</div>
+      </main>
+    </div>
 </body>
 </html>
