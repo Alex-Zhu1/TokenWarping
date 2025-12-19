@@ -128,10 +128,13 @@
 
   <div class="page-container">
     <h1>Zero-Shot Video Translation via Token Warping</h1>
-    <h2>Supplementary Materials, More Results</h2>
+    <h2>Supplementary Materials</h2>
     <ul>
       <li><a href="#" onclick="scrollToSection('More results')">Optical flow results</a></li>
-      <li><a href="#" onclick="scrollToSection('Extend large gap editing')">Extend large gap editing</a></li>
+      <li><a href="#" onclick="scrollToSection('Extend Pose editing')">Extend human-pose</a></li>
+      <li><a href="#" onclick="scrollToSection('Zero-Shot')">Comparison with SOTA Method</a></li>
+      <li><a href="#" onclick="scrollToSection('Inversion')">Comparison with Inversion Code</a></li>
+      <li><a href="#" onclick="scrollToSection('ablations')">Ablations</a></li>
       <li><a href="#" onclick="scrollToSection('Suboptimal results')">Flow in challenging cases</a></li>
     </ul>
 
@@ -493,7 +496,7 @@
     <!-- END SECTION -->
 
     <hr>
-    <h2 id="Extend large gap editing" align="left">Appearance flow for large gap editing</h2>
+    <h2 id="Extend Pose editing" align="left">Appearance flow for large gap editing</h2>
     <table class="video-table">
       <tbody>
         <tr class="empty-row"></tr>
@@ -527,6 +530,485 @@
 
     <!-- BEGIN SECTION -->
     <!-- END SECTION -->
+
+
+    <!-- BEGIN SECTION -->
+    <hr>
+    <h2 id="Zero-Shot" align="left">Comparison with SOTA Method</h2>
+    <table class="video-table">
+      <tbody>
+        <!-- <tr class="empty-row"></tr> -->
+        <tr class="large-font">
+          <td colspan="8"><span style="color: #ff0000;">A hand-drawn animation</span> of a fluffy wolf, cartoon style</td>
+        </tr>
+        <tr>
+          <td colspan="8">
+            <div class="video-container">
+              <div class="video-wrapper">
+                <video src="assets/compare/wolf23/wolf_input.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Input Video</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/wolf23/wolf_ours.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Ours</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/wolf23/wolf_fresco.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">FRESCO</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/wolf23/wolf_flatten.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Flatten</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/wolf23/wolf_tflow.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">TokenFlow</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/wolf23/wolf_CV.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">ControlVideo</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/wolf23/wolf_RAV.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Rerender</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/wolf23/wolf_T2V.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Text-to-Video-Zero</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr class="empty-row"></tr>
+  
+        <tr class="large-font">
+          <td colspan="6"><span style="color: #ff0000;">Orange SUV in sunny snow winter</span></td>
+        </tr>
+    
+        <tr>
+          <td colspan="8">
+            <div class="video-container">
+              <div class="video-wrapper">
+                <video src="assets/compare/car1/car_input.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Input Video</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/car1/car_ours.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Ours</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/car1/car_fresco.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">FRESCO</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/car1/car_flatten.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Flatten</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/car1/car_TFpnp.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">TokenFlow</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/car1/car_CV.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">ControlVideo</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/car1/car_REV.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Rerender</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/car1/car_T2V.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Text-to-Video-Zero</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+        <tr class="empty-row"></tr>
+
+        <tr class="large-font">
+          <td colspan="8"><span style="color: #ff0000;">A cartoon spiderman</span> in black suit, black shoes is dancing</td>
+        </tr>
+        
+        <tr>
+          <td colspan="8">
+            <div class="video-container">
+              <div class="video-wrapper">
+                <video src="assets/compare/spider/dance_spiderman_input.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Input Video</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/spider/spider_ours.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Ours</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/spider/spider_fresco.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">FRESCO</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/spider/spider_flatten.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Flatten</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/spider/spider_TFpnp.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">TokenFlow</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/spider/spider_CV.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">ControlVideo</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/spider/spider_rerender.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Rerender</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/spider/spider_T2V.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Text-to-Video-Zero</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+        <tr class="empty-row"></tr>
+
+        <tr class="large-font">
+          <td colspan="8">A black boxer wearing black boxing gloves punches towards the camera, <span style="color: #ff0000;">cartoon style</span></td>
+        </tr>
+        
+        <tr>
+          <td colspan="8">
+            <div class="video-container">
+              <div class="video-wrapper">
+                <video src="assets/compare/boxer/boxer_cartoon_input.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Input Video</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/boxer/boxer_ours.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Ours</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/boxer/boxer_cartoon_fresco.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">FRESCO</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/boxer/boxer_flatten.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Flatten</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/boxer/boxer_cartoon_TFpnp.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">TokenFlow</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/boxer/boxer_cartoon_CV.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">ControlVideo</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/boxer/boxer_cartoon_rerender.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Rerender</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/boxer/boxer_cartoon_T2VZ.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Text-to-Video-Zero</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        <!-- ... (others) ... -->
+        <tr class="empty-row"></tr>
+  
+        <tr class="large-font">
+          <td colspan="6">A <span style="color: #ff0000;">white deer</span> in the snow</td>
+        </tr>
+    
+        <tr>
+          <td colspan="8">
+            <div class="video-container">
+              <div class="video-wrapper">
+                <video src="assets/compare/deer/deer_white_input.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Input Video</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/deer/deer_ours.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Ours</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/deer/deer_fresco.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">FRESCO</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="" autoplay loop controls muted></video>
+                <div class="video-caption">Flatten: Error creating optical flow index</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/deer/deer_white_TFpnp.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">TokenFlow</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/deer/deer_white_CV.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">ControlVideo</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/deer/deer_white_rerender.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Rerender</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/deer/deer_white_T2VZ.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Text-to-Video-Zero</div>
+              </div>
+            </div>
+          </td>
+        </tr>        
+  
+        <tr class="empty-row"></tr>
+  
+        <tr class="large-font">
+          <td colspan="6">A <span style="color: #ff0000;">white</span> cat in <span style="color: #ff0000;">pink </span> background</td>
+        </tr>
+    
+        <tr>
+          <td colspan="8">
+            <div class="video-container">
+              <div class="video-wrapper">
+                <video src="assets/compare/cat/cat_white_input.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Input video</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/cat/cat_ours.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Ours</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/cat/cat_white_fresco.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">FRESCO</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="" autoplay loop controls muted></video>
+                <div class="video-caption">Flatten: Error creating optical flow index</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/cat/cat_white_TFpnp.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">TokenFlow</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/cat/cat_white_CV.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">ControlVideo</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/cat/cat_white_rerender.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Rerender</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/cat/cat_white_T2VZ.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Text-to-Video-Zero</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+        <tr class="large-font">
+          <td colspan="6"><span style="color: #ff0000;">Cartoon style, a man, in a castle</span></td>
+        </tr>
+    
+        <tr>
+          <td colspan="8">
+            <div class="video-container">
+              <div class="video-wrapper">
+                <video src="assets/compare/olderman1/olderman_input.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Input Video</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/olderman1/castle_ours.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Ours</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/olderman1/castle_fresco.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">FRESCO</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/olderman1/castle_flatten.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Flatten</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/olderman1/castle_tfpnp.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">TokenFlow</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/olderman1/castle_CV.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">ControlVideo</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/olderman1/castle_RAV.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Rerender</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/olderman1/castle_T2V-zero.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Text-to-Video-Zero</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+        <tr> <td><br></td> </tr>
+      </tbody>
+    </table>
+    <!-- END SECTION -->
+
+    <hr>
+    <h2 id="Inversion" align="left">Comparison results with inversion code</h2>
+    <table width="1200" align="center">
+      <tbody>
+        <tr class="large-font">
+          <td colspan="8"><span style="color: #ff0000;">A sculpture </span>of a woman running</td>
+        </tr>
+        
+        <tr>
+          <td colspan="8">
+            <div class="video-container">
+              <div class="video-wrapper">
+                <video src="assets/compare/woman23/woman_input.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Input Video</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/woman23/woman_ours.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Ours</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/woman23/woman_fresco.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">FRESCO</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/woman23/woman_flatten8.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Flatten</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/woman23/woman_TFpnp.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">TokenFlow</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/woman23/woman_CV.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">ControlVideo</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/woman23/woman_RAV.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Rerender</div>
+              </div>
+              <div class="video-wrapper">
+                <video src="assets/compare/woman23/woman_T2V.mp4" autoplay loop controls muted></video>
+                <div class="video-caption">Text-to-Video-Zero</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        
+              <!-- ... (others) ... -->
+        <tr> <td><br></td> </tr>
+      </tbody>
+    </table>
+
+    <hr>
+    <h2 id="ablations" align="left">Ablations</h2>
+    <table width="1200" align="center">
+      <tbody>
+
+        <tr class="large-font dashed-border">
+          <td colspan="6" style="font-family: Arial; text-align: left; font-size: 18px;">
+            Exp1: combining anchor token and warped token gets better results.
+          </td>
+        </tr>
+    
+        <tr class="large-font">
+          <td colspan="6">A white deer in the snow<span style="color: #ff0000;"></span></td>
+        </tr>
+
+        <tr>
+          <!-- <th class="video-cell">
+            <video width="200" src="assets/compare/deer_ab/deer_baseline.mp4" autoplay="" loop="" controls="" muted=""></video>
+          </th> -->
+          <th class="video-cell">
+            <video width="200" src="assets/compare/deer_ab/deer_q.mp4" autoplay="" loop="" controls="" muted=""></video>
+          </th>
+          <th class="video-cell">
+            <video width="200" src="assets/compare/deer_ab/deer_q+kv_first.mp4" autoplay="" loop="" controls="" muted=""></video>
+          </th>
+          <th class="video-cell">
+            <video width="200" src="assets/compare/deer_ab/deer_q+kv_warp.mp4" autoplay="" loop="" controls="" muted=""></video>
+          </th>
+          <th class="video-cell">
+            <video width="200" src="assets/compare/deer_ab/deer_qkv.mp4" autoplay="" loop="" controls="" muted=""></video>
+          </th>
+        </tr>
+
+        <tr class="video-caption">
+          <th>Only warping query token</th>
+          <th>warping query + first kv</th>
+          <th>warping query + warping kv</th>
+          <th>full, warping query + [first kv, warping kv]</th>
+        </tr>
+
+        <tr class="empty-row"></tr>
+        <tr class="large-font dashed-border">
+          <td colspan="6" style="font-family: Arial; text-align: left; font-size: 18px;">
+            Exp2: aligned query patches help correctly aggregate features in attention.
+          </td>
+        </tr>
+    
+        <tr class="large-font">
+          <td colspan="6">A white cat in pink background<span style="color: #ff0000;"></span></td>
+        </tr>
+
+        <tr>
+          <!-- <th class="video-cell">
+            <video width="200" src="assets/compare/deer_ab/deer_baseline.mp4" autoplay="" loop="" controls="" muted=""></video>
+          </th> -->
+          <th class="video-cell">
+            <video width="200" src="assets/compare/cat/cat_white_input.mp4" autoplay="" loop="" controls="" muted=""></video>
+          </th>
+          <th class="video-cell">
+            <video width="200" src="assets/compare/cat_ab/cat_w_kv.mp4" autoplay="" loop="" controls="" muted=""></video>
+          </th>
+          <th class="video-cell">
+            <video width="200" src="assets/compare/cat_ab/cat_attn_fea.mp4" autoplay="" loop="" controls="" muted=""></video>
+          </th>
+          <th class="video-cell">
+            <video width="200" src="assets/compare/cat/cat_ours.mp4" autoplay="" loop="" controls="" muted=""></video>
+          </th>
+        </tr>
+
+        <tr class="video-caption">
+          <th>input</th>
+          <th>warping kv, no warping query</th>
+          <th>warping attention-output feas</th>
+          <th>full</th>
+        </tr>
+        
+        <tr class="empty-row"></tr>
+        <tr class="large-font dashed-border">
+          <td colspan="6" style="font-family: Arial; text-align: left; font-size: 18px;">
+            Exp3: ControlNet provide source video's structure, help flow propagation.
+          </td>
+        </tr>
+
+        <tr>
+          <th class="video-cell">
+            <video width="200" src="assets/compare/cat_ab/control.mp4" autoplay="" loop="" controls="" muted=""></video>
+          </th>
+          <th class="video-cell">
+            <video width="200" src="assets/compare/cat_ab/cat_wo_controlnet.mp4" autoplay="" loop="" controls="" muted=""></video>
+          </th>
+          <th class="video-cell"></th>
+          <th class="video-cell"></th>
+        </tr>
+
+        <tr class="video-caption">
+          <th>controlnet input</th>
+          <th>results of no controlnet input</th>
+          <th></th>
+          <th></th>
+        </tr>
+
+      <tr> <td><br></td> </tr>
+      </tbody>
+    </table>
 
     <hr>
     <h2 id="Suboptimal results" align="left">Flow in challenging cases</h2>
