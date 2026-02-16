@@ -56,10 +56,10 @@ If you find our work helpful in your project, please cite:
   author={Zhu, Haiming and Xu, Yangyang and Yu, Jun and He, Shengfeng},
   journal={IEEE Transactions on Visualization and Computer Graphics}, 
   title={Zero-Shot Video Translation via Token Warping}, 
-  year={2025},
-  volume={},
-  number={},
-  pages={1-11},
+  year={2026},
+  volume={32},
+  number={2},
+  pages={1582-1592},
   doi={10.1109/TVCG.2025.3636949}}
 ```
 
